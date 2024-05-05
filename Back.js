@@ -31,12 +31,29 @@ app.get('/products/:id', (req, res) => {
     }
 });
 
-// Endpoint to create a new product
 app.post('/products', (req, res) => {
     const newProduct = req.body;
+    if (!newProduct.name) {
+        // Menghasilkan bug: Tidak memeriksa apakah nama produk ada atau tidak
+        res.status(400).json({ message: 'Product name is required' });
+        return;
+    }
     products.push(newProduct);
     res.status(201).json(newProduct);
 });
+
+/* Pada line 34 - 43 terdapat bug, tolong ganti dengan kode di bawah ini!!! */
+
+/* app.post('/products', (req, res) => {
+    const newProduct = req.body;
+    // Memastikan ada nama produk sebelum menambahkannya
+    if (!newProduct.name || newProduct.name.trim() === '') {
+        res.status(400).json({ message: 'Product name is required' });
+        return;
+    }
+    products.push(newProduct);
+    res.status(201).json(newProduct);
+}); */
 
 // Endpoint to update an existing product
 app.put('/products/:id', (req, res) => {
